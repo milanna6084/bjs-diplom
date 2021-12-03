@@ -1,4 +1,4 @@
-
+'use strict';
 const newLogoutButton = new LogoutButton();
 const newRatesBoard = new RatesBoard();
 const newMoneyManager = new MoneyManager();
@@ -28,7 +28,7 @@ newMoneyManager.addMoneyCallback = (data) => {
     ApiConnector.addMoney(data, response => {
         if (response.success)  ProfileWidget.showProfile(response.data); 
         newMoneyManager.setMessage(response.success, 
-            response.success ? "Ваш счет был успешно пополнен" : "Произошла ошибка. Ваш счет не был пополнен.");
+            response.success ? "Ваш счет был успешно пополнен" : response.error);
     });
 }
 
@@ -36,7 +36,7 @@ newMoneyManager.conversionMoneyCallback = (data) => {
     ApiConnector.convertMoney(data, response => {
         if (response.success) ProfileWidget.showProfile(response.data); 
         newMoneyManager.setMessage(response.success, 
-            response.success ? "Конвертация прошла успешно" : "Произошла ошибка. Конвертация не была произведена");
+            response.success ? "Конвертация прошла успешно" : response.error);
         
     });
 }
@@ -45,7 +45,7 @@ newMoneyManager.sendMoneyCallback = (data) => {
     ApiConnector.transferMoney(data, response => {
         if (response.success)  ProfileWidget.showProfile(response.data); 
         newMoneyManager.setMessage(response.success,
-            response.success ?  "Ваш перевод был успешно отправлен" : "Произошла ошибка. Ваш перевод не был отправлен");
+            response.success ?  "Ваш перевод был успешно отправлен" : response.error);
         
     });
 }
@@ -65,8 +65,8 @@ newFavoritesWidget.addUserCallback = (data) => {
             newFavoritesWidget.fillTable(response.data);
             newMoneyManager.updateUsersList(response.data);
          }
-            newMoneyManager.setMessage(response.success,
-                response.success ? "Пользователь был успешно добавлен" : "Произошла ошибка. Пользователь не был добавлен");
+            newFavoritesWidget.setMessage(response.success,
+                response.success ? "Пользователь был успешно добавлен" : response.error);
     });
 }
 
@@ -77,9 +77,10 @@ newFavoritesWidget.removeUserCallback = (data) => {
             newFavoritesWidget.fillTable(response.data);
             newMoneyManager.updateUsersList(response.data);
          }
-            newMoneyManager.setMessage(response.success, 
-                response.success ? "Пользователь был успешно удален" : "Произошла ошибка. Пользователь не был удален");
+            newFavoritesWidget.setMessage(response.success, 
+                response.success ? "Пользователь был успешно удален" : response.error);
     });
+    
 } 
 
 
